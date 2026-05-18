@@ -1,0 +1,643 @@
+<!DOCTYPE html>
+<html class="dark" lang="en">
+<head>
+    <meta charset="utf-8"/>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+    <title>VisionAI - Hybrid Vision-Language System</title>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&amp;family=Geist:wght@400;600;700&amp;display=swap" rel="stylesheet"/>
+    <script id="tailwind-config">
+        tailwind.config = {
+          darkMode: "class",
+          theme: {
+            extend: {
+              "colors": {
+                      "primary-fixed-dim": "#00dbe7",
+                      "on-tertiary": "#3c0091",
+                      "surface-tint": "#00dbe7",
+                      "on-background": "#dce1fb",
+                      "surface-dim": "#0c1324",
+                      "surface-container-low": "#151b2d",
+                      "on-error": "#690005",
+                      "surface-container-highest": "#2e3447",
+                      "error-container": "#93000a",
+                      "surface-container-high": "#23293c",
+                      "secondary": "#adc6ff",
+                      "on-primary-fixed-variant": "#004f54",
+                      "surface-variant": "#2e3447",
+                      "on-tertiary-container": "#6f3cd8",
+                      "on-secondary-fixed-variant": "#004493",
+                      "on-primary-fixed": "#002022",
+                      "surface": "#0c1324",
+                      "on-secondary-container": "#00285c",
+                      "tertiary": "#fcf5ff",
+                      "primary-container": "#00f2ff",
+                      "on-primary": "#00363a",
+                      "surface-container-lowest": "#070d1f",
+                      "tertiary-fixed": "#e9ddff",
+                      "background": "#0c1324",
+                      "tertiary-container": "#e2d4ff",
+                      "on-primary-container": "#006a71",
+                      "outline": "#849495",
+                      "primary": "#e1fdff",
+                      "on-surface-variant": "#b9cacb",
+                      "on-secondary-fixed": "#001a41",
+                      "inverse-surface": "#dce1fb",
+                      "on-tertiary-fixed": "#23005c",
+                      "surface-container": "#191f31",
+                      "on-error-container": "#ffdad6",
+                      "on-secondary": "#002e69",
+                      "primary-fixed": "#74f5ff",
+                      "inverse-on-surface": "#2a3043",
+                      "on-surface": "#dce1fb",
+                      "secondary-fixed": "#d8e2ff",
+                      "tertiary-fixed-dim": "#d0bcff",
+                      "secondary-fixed-dim": "#adc6ff",
+                      "secondary-container": "#4b8eff",
+                      "inverse-primary": "#00696f",
+                      "outline-variant": "#3a494b",
+                      "error": "#ffb4ab"
+              },
+              "borderRadius": {
+                      "DEFAULT": "0.25rem",
+                      "lg": "0.5rem",
+                      "xl": "0.75rem",
+                      "full": "9999px"
+              },
+              "spacing": {
+                      "base": "8px",
+                      "margin-mobile": "16px",
+                      "gutter": "24px",
+                      "margin-desktop": "40px",
+                      "xs": "4px",
+                      "md": "24px",
+                      "sm": "12px",
+                      "lg": "48px",
+                      "xl": "80px"
+              },
+              "fontFamily": {
+                      "headline-md": ["Geist"],
+                      "display": ["Geist"],
+                      "body-md": ["Geist"],
+                      "label-md": ["Geist"],
+                      "headline-lg": ["Geist"],
+                      "body-lg": ["Geist"],
+                      "headline-lg-mobile": ["Geist"],
+                      "body-sm": ["Geist"],
+                      "code": ["JetBrains Mono"]
+              },
+              "fontSize": {
+                      "headline-md": ["24px", {"lineHeight": "1.3", "fontWeight": "600"}],
+                      "display": ["48px", {"lineHeight": "1.1", "letterSpacing": "-0.04em", "fontWeight": "700"}],
+                      "body-md": ["16px", {"lineHeight": "1.6", "fontWeight": "400"}],
+                      "label-md": ["12px", {"lineHeight": "1", "letterSpacing": "0.05em", "fontWeight": "600"}],
+                      "headline-lg": ["32px", {"lineHeight": "1.2", "letterSpacing": "-0.02em", "fontWeight": "600"}],
+                      "body-lg": ["18px", {"lineHeight": "1.6", "fontWeight": "400"}],
+                      "headline-lg-mobile": ["24px", {"lineHeight": "1.2", "letterSpacing": "-0.02em", "fontWeight": "600"}],
+                      "body-sm": ["14px", {"lineHeight": "1.5", "fontWeight": "400"}],
+                      "code": ["14px", {"lineHeight": "1.5", "fontWeight": "400"}]
+              }
+            },
+          },
+        }
+    </script>
+    <style>
+        .glass-card {
+            background: rgba(21, 27, 45, 0.4);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        .neon-glow-primary {
+            box-shadow: 0 0 20px rgba(0, 242, 255, 0.2);
+        }
+        .soundwave-bar {
+            width: 3px;
+            background: #00f2ff;
+            border-radius: 99px;
+            margin: 0 1px;
+            animation: pulse-wave 1.5s infinite ease-in-out alternate;
+        }
+        @keyframes pulse-wave {
+            0% { transform: scaleY(0.5); opacity: 0.5; }
+            100% { transform: scaleY(1); opacity: 1; }
+        }
+        .drag-active {
+            border-color: #00f2ff !important;
+            background-color: rgba(0, 242, 255, 0.1) !important;
+        }
+        html:not(.dark) body {
+            background-color: #f8fafc !important;
+            color: #0f172a !important;
+        }
+        html:not(.dark) .glass-card {
+            background: rgba(255, 255, 255, 0.8) !important;
+            border: 1px solid rgba(0, 0, 0, 0.05) !important;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+        }
+        html:not(.dark) .text-on-surface-variant,
+        html:not(.dark) .text-on-surface {
+            color: #475569 !important;
+        }
+        html:not(.dark) .text-primary {
+            color: #0f172a !important;
+        }
+        html:not(.dark) .text-primary-container,
+        html:not(.dark) .text-primary-fixed-dim {
+            color: #1e293b !important;
+        }
+        html:not(.dark) .bg-surface-container-lowest {
+            background-color: #ffffff !important;
+        }
+        html:not(.dark) header {
+            background-color: rgba(255, 255, 255, 0.8) !important;
+            border-bottom: 1px solid rgba(0, 0, 0, 0.05) !important;
+        }
+    </style>
+</head>
+<body class="bg-background text-on-background font-body-md min-h-screen">
+    <!-- TopAppBar -->
+    <header class="fixed top-0 left-0 w-full z-50 flex justify-between items-center px-margin-desktop py-4 bg-surface/80 dark:bg-surface-container-low/80 backdrop-blur-xl border-b border-white/10 shadow-[0_0_20px_rgba(0,242,255,0.15)]">
+        <div class="flex items-center gap-6">
+            <div class="flex flex-col">
+                <span class="font-display text-headline-lg font-bold text-primary-container tracking-tighter">VisionAI</span>
+                <span class="font-label-md text-label-md text-on-surface-variant">Hybrid Vision-Language AI Captioning System</span>
+            </div>
+            <div class="hidden lg:flex items-center gap-3 ml-4">
+                <div class="flex items-center gap-1.5 px-3 py-1 rounded-full bg-green-500/10 border border-green-500/20">
+                    <span class="w-1.5 h-1.5 rounded-full bg-green-500 animate-pulse"></span>
+                    <span class="text-[10px] font-bold text-green-500 tracking-wider">GPU ACTIVE</span>
+                </div>
+                <div class="flex items-center gap-1.5 px-3 py-1 rounded-full bg-blue-500/10 border border-blue-500/20">
+                    <span class="w-1.5 h-1.5 rounded-full bg-blue-500"></span>
+                    <span class="text-[10px] font-bold text-blue-500 tracking-wider">BLIP LOADED</span>
+                </div>
+                <div class="flex items-center gap-1.5 px-3 py-1 rounded-full bg-primary-container/10 border border-primary-container/20">
+                    <span class="w-1.5 h-1.5 rounded-full bg-primary-container"></span>
+                    <span class="text-[10px] font-bold text-primary-container tracking-wider">FINE-TUNED READY</span>
+                </div>
+            </div>
+        </div>
+        <div class="flex items-center gap-4">
+            <button id="theme-toggle" class="w-10 h-10 rounded-xl glass-card flex items-center justify-center hover:text-primary transition-colors">
+                <span class="material-symbols-outlined text-[20px]">light_mode</span>
+            </button>
+            <button class="w-10 h-10 rounded-xl glass-card flex items-center justify-center hover:text-primary transition-colors">
+                <span class="material-symbols-outlined text-[20px]">settings</span>
+            </button>
+            <div class="w-10 h-10 rounded-full border border-primary-container/30 overflow-hidden">
+                <img alt="User profile" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBlc--d_enSn89GTxEIl2pp6T1WroBfzNmPOg3rPxCeXYkUA5GQL7gAMwasZ8lZ9RYRHmwbDDg-zQIiQ-zgpbI2awJ_PDPSX6NQRwJbPs70o1VdVeHXHVpYDvgz_5pgHt5HASIhNSzxRIYK7yNizHZV-ZEK8O4o9CWOxfbkVeE7r_uK6oAcBiUArVPXjQkMpW6LeJRmNTrl-n_NelQxspoQNSx7Mzzq6EoZytdy81p4yi6xIqPGeOu6vmt92o5nOEIW65T8F29Mxend"/>
+            </div>
+        </div>
+    </header>
+
+    <main class="pt-32 pb-20 px-margin-desktop max-w-[1600px] mx-auto">
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-gutter">
+            <!-- Left/Center Column -->
+            <div class="lg:col-span-8 space-y-gutter">
+                <!-- Input Selection & Interface -->
+                <div class="glass-card rounded-xl p-8 space-y-8 relative overflow-hidden">
+                    
+                    <!-- Loading Overlay State -->
+                    <div id="loading-overlay" class="absolute inset-0 bg-surface-dim/80 backdrop-blur-md z-20 flex flex-col items-center justify-center opacity-0 pointer-events-none transition-opacity duration-300">
+                        <div class="relative">
+                            <div class="w-20 h-20 border-4 border-primary-container/20 border-t-primary-container rounded-full animate-spin"></div>
+                            <span class="material-symbols-outlined absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-primary-container text-3xl">psychology</span>
+                        </div>
+                        <p class="mt-6 font-headline-md text-headline-md text-primary-container">Analyzing image with VisionAI...</p>
+                        <p class="text-on-surface-variant font-body-sm text-body-sm">Processing through Hybrid BLIP Architecture</p>
+                    </div>
+
+                    <div class="flex items-center justify-between border-b border-outline-variant/20 pb-4">
+                        <div class="flex gap-2 p-1 bg-surface-container-lowest rounded-lg border border-outline-variant/10">
+                            <button id="tab-upload" class="px-6 py-2.5 rounded-md bg-primary-container text-on-primary-container font-label-md text-label-md flex items-center gap-2 shadow-lg transition-colors">
+                                <span class="material-symbols-outlined text-[18px]">image</span>
+                                Image Upload
+                            </button>
+                            <button id="tab-webcam" class="px-6 py-2.5 rounded-md text-on-surface-variant hover:text-on-surface font-label-md text-label-md flex items-center gap-2 transition-colors">
+                                <span class="material-symbols-outlined text-[18px]">videocam</span>
+                                Live Webcam
+                            </button>
+                        </div>
+                    </div>
+
+                    <form id="uploadForm" action="{{ url_for('upload_image') }}" method="POST" enctype="multipart/form-data">
+                        <!-- Upload Area -->
+                        <div id="upload-area" class="border-2 border-dashed border-primary-container/30 rounded-2xl bg-primary-container/5 p-12 group hover:border-primary-container transition-all cursor-pointer relative overflow-hidden">
+                            {% if image_url %}
+                            <img src="{{ image_url }}" class="absolute inset-0 w-full h-full object-cover opacity-100 pointer-events-none" id="preview-image-bg">
+                            {% else %}
+                            <img src="#" class="absolute inset-0 w-full h-full object-cover opacity-100 pointer-events-none hidden" id="preview-image-bg">
+                            {% endif %}
+                            
+                            <div class="flex flex-col items-center text-center gap-4 relative z-10">
+                                <div class="w-16 h-16 rounded-full bg-primary-container/10 flex items-center justify-center group-hover:scale-110 transition-transform">
+                                    <span class="material-symbols-outlined text-primary-container text-4xl">cloud_upload</span>
+                                </div>
+                                <div>
+                                    <h3 class="font-headline-md text-headline-md text-primary" id="drop-text">Drag &amp; drop your visual data</h3>
+                                    <p class="text-on-surface-variant font-body-md text-body-md mt-1">Supports JPEG, PNG, WEBP (Max 25MB)</p>
+                                </div>
+                                <button type="button" class="mt-4 px-8 py-3 bg-primary-container text-on-primary-container font-bold rounded-lg hover:brightness-110 transition-all shadow-lg neon-glow-primary" onclick="document.getElementById('image-input').click()">
+                                    Browse Files
+                                </button>
+                                <input type="file" name="image" id="image-input" accept="image/*" class="hidden" onchange="previewImage(event)">
+                            </div>
+                        </div>
+
+                        <!-- Webcam Viewfinder (Preview) -->
+                        <div id="webcam-area" class="hidden rounded-2xl overflow-hidden relative border border-outline-variant/30 aspect-video bg-black">
+                            <video id="camera-stream" autoplay playsinline class="w-full h-full object-cover opacity-80"></video>
+                            <canvas id="camera-canvas" class="hidden"></canvas>
+                            
+                            <div class="absolute inset-0 flex flex-col justify-between p-6">
+                                <div class="flex justify-between">
+                                    <div class="flex gap-2">
+                                        <div class="bg-red-500/80 text-white text-[10px] font-bold px-2 py-0.5 rounded uppercase tracking-widest flex items-center gap-1">
+                                            <span class="w-1.5 h-1.5 rounded-full bg-white animate-pulse"></span> REC
+                                        </div>
+                                    </div>
+                                    <span class="material-symbols-outlined text-white/50" onclick="startWebcam()" style="cursor:pointer;" title="Restart Camera">center_focus_weak</span>
+                                </div>
+                                <div class="flex justify-center gap-4">
+                                    <button type="button" id="capture-btn" class="px-8 py-3 bg-primary-container text-on-primary-container font-bold rounded-lg flex items-center gap-2 shadow-2xl neon-glow-primary">
+                                        <span class="material-symbols-outlined">photo_camera</span> Capture Frame
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="pt-4" id="generate-btn-container">
+                            <button type="submit" id="generate-btn" class="w-full py-5 bg-gradient-to-r from-primary-container to-secondary-container text-on-primary-container font-display text-headline-md rounded-xl shadow-[0_0_30px_rgba(0,242,255,0.3)] hover:scale-[1.01] active:scale-[0.98] transition-all flex items-center justify-center gap-4">
+                                <span class="material-symbols-outlined text-3xl">auto_awesome</span>
+                                Generate Caption
+                            </button>
+                        </div>
+                    </form>
+
+                    {% if error %}
+                    <div class="mt-4 p-4 rounded-lg bg-red-500/20 border border-red-500/50 text-red-200">
+                        {{ error }}
+                    </div>
+                    {% endif %}
+                </div>
+
+                <!-- Technical Specs Card -->
+                <div class="glass-card rounded-xl p-6 hidden md:block">
+                    <div class="flex items-center gap-3 mb-6">
+                        <span class="material-symbols-outlined text-primary-container">terminal</span>
+                        <h3 class="font-headline-md text-headline-md">System Specifications</h3>
+                    </div>
+                    <div class="grid grid-cols-2 md:grid-cols-4 gap-6">
+                        <div class="space-y-1">
+                            <p class="text-on-surface-variant font-label-md text-label-md uppercase tracking-wider">Base Model</p>
+                            <p class="font-code text-primary-fixed-dim text-body-sm">Salesforce BLIP</p>
+                        </div>
+                        <div class="space-y-1">
+                            <p class="text-on-surface-variant font-label-md text-label-md uppercase tracking-wider">Dataset</p>
+                            <p class="font-code text-primary-fixed-dim text-body-sm">Flickr8k + Custom</p>
+                        </div>
+                        <div class="space-y-1">
+                            <p class="text-on-surface-variant font-label-md text-label-md uppercase tracking-wider">Training Hardware</p>
+                            <p class="font-code text-primary-fixed-dim text-body-sm">RTX 3050 CUDA</p>
+                        </div>
+                        <div class="space-y-1">
+                            <p class="text-on-surface-variant font-label-md text-label-md uppercase tracking-wider">Framework</p>
+                            <p class="font-code text-primary-fixed-dim text-body-sm">PyTorch + Flask</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Right Column -->
+            <div class="lg:col-span-4 space-y-gutter" id="results-section" {% if not caption %}style="display: none;"{% endif %}>
+                <!-- Results Section -->
+                <div class="space-y-4">
+                    <h2 class="font-headline-md text-headline-md flex items-center gap-2 px-2">
+                        <span class="material-symbols-outlined text-primary-container">wysiwyg</span>
+                        Caption
+                    </h2>
+                    
+                    <div class="glass-card rounded-xl p-6 bg-primary-container/10 border-2 border-primary-container/30 relative overflow-hidden group">
+                        <div class="absolute top-0 right-0 p-2">
+                            <span class="material-symbols-outlined text-primary-container text-md animate-pulse" style="font-variation-settings: 'FILL' 1;">stars</span>
+                        </div>
+                        <div class="flex justify-between items-center mb-3">
+                            <span class="font-label-md text-label-md text-primary-container font-bold tracking-widest uppercase">Caption</span>
+                            <span class="font-code text-[10px] text-primary-container bg-primary-container/20 px-2 py-0.5 rounded">Optimized</span>
+                        </div>
+                        <p id="caption-text-display" class="text-primary font-headline-md text-headline-md leading-snug">
+                            {{ caption }}
+                        </p>
+                    </div>
+                </div>
+
+                <!-- TTS Section -->
+                <div class="glass-card rounded-xl p-6 space-y-6">
+                    <div class="flex items-center justify-between">
+                        <div class="flex items-center gap-3">
+                            <div class="w-10 h-10 rounded-full bg-primary-container/20 flex items-center justify-center">
+                                <span class="material-symbols-outlined text-primary-container">volume_up</span>
+                            </div>
+                            <h3 class="font-headline-md text-headline-md">Vocalize Output</h3>
+                        </div>
+                    </div>
+                    
+                    <!-- Visualizer -->
+                    <div class="h-12 flex items-center justify-center gap-1 px-4">
+                        <div class="soundwave-bar h-2" style="animation-delay: 0.1s"></div>
+                        <div class="soundwave-bar h-4" style="animation-delay: 0.2s"></div>
+                        <div class="soundwave-bar h-8" style="animation-delay: 0.3s"></div>
+                        <div class="soundwave-bar h-10" style="animation-delay: 0.4s"></div>
+                        <div class="soundwave-bar h-6" style="animation-delay: 0.5s"></div>
+                        <div class="soundwave-bar h-9" style="animation-delay: 0.6s"></div>
+                        <div class="soundwave-bar h-12" style="animation-delay: 0.7s"></div>
+                        <div class="soundwave-bar h-7" style="animation-delay: 0.8s"></div>
+                        <div class="soundwave-bar h-11" style="animation-delay: 0.9s"></div>
+                        <div class="soundwave-bar h-5" style="animation-delay: 1.0s"></div>
+                        <div class="soundwave-bar h-8" style="animation-delay: 1.1s"></div>
+                        <div class="soundwave-bar h-3" style="animation-delay: 1.2s"></div>
+                        <div class="soundwave-bar h-9" style="animation-delay: 1.3s"></div>
+                        <div class="soundwave-bar h-6" style="animation-delay: 1.4s"></div>
+                        <div class="soundwave-bar h-10" style="animation-delay: 1.5s"></div>
+                    </div>
+                    
+                    <div class="space-y-4">
+                        <audio id="caption-audio" class="hidden" {% if audio_url %}src="{{ audio_url }}"{% endif %}></audio>
+                        <div class="flex gap-3">
+                            <button id="play-audio-btn" class="flex-1 py-3 bg-primary-container text-on-primary-container rounded-lg font-bold flex items-center justify-center gap-2 hover:brightness-110 active:scale-95 transition-all">
+                                <span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">play_arrow</span>
+                                Speak Caption
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="w-full py-6 px-margin-desktop flex flex-col md:flex-row justify-between items-center bg-surface-container-lowest/50 backdrop-blur-md border-t border-outline-variant/10 mt-auto">
+        <div class="flex flex-col items-center md:items-start gap-1">
+            <span class="font-code text-primary text-body-sm">VisionAI / Node_01</span>
+            <p class="font-body-sm text-body-sm text-on-surface-variant">Built with BLIP, PyTorch, Flask, and CUDA GPU Acceleration</p>
+        </div>
+        <p class="mt-4 md:mt-0 text-[10px] font-code text-on-surface-variant opacity-50 uppercase tracking-[0.2em]">
+            © 2026 Neural Dynamics Research Labs
+        </p>
+    </footer>
+
+    <!-- Interactivity Scripts -->
+    <script>
+        // -----------------------
+        // THEME TOGGLE
+        // -----------------------
+        const themeToggleBtn = document.getElementById('theme-toggle');
+        const htmlRoot = document.documentElement;
+
+        if (localStorage.getItem('theme') === 'light') {
+            htmlRoot.classList.remove('dark');
+        }
+
+        themeToggleBtn.addEventListener('click', () => {
+            if (htmlRoot.classList.contains('dark')) {
+                htmlRoot.classList.remove('dark');
+                localStorage.setItem('theme', 'light');
+            } else {
+                htmlRoot.classList.add('dark');
+                localStorage.setItem('theme', 'dark');
+            }
+        });
+
+        // -----------------------
+        // LOADING OVERLAY
+        // -----------------------
+        function showLoading() {
+            const overlay = document.getElementById('loading-overlay');
+            overlay.style.opacity = '1';
+            overlay.style.pointerEvents = 'auto';
+        }
+
+        function hideLoading() {
+            const overlay = document.getElementById('loading-overlay');
+            overlay.style.opacity = '0';
+            overlay.style.pointerEvents = 'none';
+        }
+
+        // Form submit integration
+        const uploadForm = document.getElementById('uploadForm');
+        uploadForm.addEventListener('submit', (e) => {
+            const fileInput = document.getElementById('image-input');
+            // If in webcam mode, we prevent default form submit (it will be handled by capture button)
+            if (document.getElementById('webcam-area').classList.contains('hidden') === false) {
+                e.preventDefault();
+                return;
+            }
+            if (fileInput.files.length > 0) {
+                showLoading();
+            } else {
+                e.preventDefault();
+                alert("Please select an image first.");
+            }
+        });
+
+        // -----------------------
+        // DRAG & DROP LOGIC
+        // -----------------------
+        const dropArea = document.getElementById('upload-area');
+        const fileInput = document.getElementById('image-input');
+        const dropText = document.getElementById('drop-text');
+        const previewImageBg = document.getElementById('preview-image-bg');
+
+        ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => { 
+            dropArea.addEventListener(eventName, preventDefaults, false); 
+        });
+        function preventDefaults(e) { e.preventDefault(); e.stopPropagation(); }
+
+        ['dragenter', 'dragover'].forEach(eventName => { 
+            dropArea.addEventListener(eventName, () => dropArea.classList.add('drag-active'), false); 
+        });
+        ['dragleave', 'drop'].forEach(eventName => { 
+            dropArea.addEventListener(eventName, () => dropArea.classList.remove('drag-active'), false); 
+        });
+
+        dropArea.addEventListener('drop', handleDrop, false);
+        function handleDrop(e) {
+            let dt = e.dataTransfer;
+            let files = dt.files;
+            if(files.length > 0) {
+                fileInput.files = files;
+                const event = new Event('change');
+                fileInput.dispatchEvent(event);
+            }
+        }
+
+        function previewImage(event) {
+            const input = event.target;
+            const file = input.files[0];
+            if (file) {
+                const url = URL.createObjectURL(file);
+                previewImageBg.src = url;
+                previewImageBg.classList.remove('hidden');
+                dropText.innerHTML = `<span style="color:#00f2ff">Selected:</span> ${file.name}`;
+            }
+        }
+
+        // -----------------------
+        // TABS LOGIC (Upload vs Webcam)
+        // -----------------------
+        const tabUpload = document.getElementById('tab-upload');
+        const tabWebcam = document.getElementById('tab-webcam');
+        const uploadArea = document.getElementById('upload-area');
+        const webcamArea = document.getElementById('webcam-area');
+        const generateBtnContainer = document.getElementById('generate-btn-container');
+
+        let isWebcamActive = false;
+
+        function setUploadMode() {
+            tabUpload.classList.add('bg-primary-container', 'text-on-primary-container');
+            tabUpload.classList.remove('text-on-surface-variant');
+            
+            tabWebcam.classList.remove('bg-primary-container', 'text-on-primary-container');
+            tabWebcam.classList.add('text-on-surface-variant');
+
+            uploadArea.classList.remove('hidden');
+            webcamArea.classList.add('hidden');
+            generateBtnContainer.classList.remove('hidden');
+            
+            stopWebcam();
+        }
+
+        function setWebcamMode() {
+            tabWebcam.classList.add('bg-primary-container', 'text-on-primary-container');
+            tabWebcam.classList.remove('text-on-surface-variant');
+            
+            tabUpload.classList.remove('bg-primary-container', 'text-on-primary-container');
+            tabUpload.classList.add('text-on-surface-variant');
+
+            uploadArea.classList.add('hidden');
+            webcamArea.classList.remove('hidden');
+            generateBtnContainer.classList.add('hidden');
+
+            startWebcam();
+        }
+
+        tabUpload.addEventListener('click', setUploadMode);
+        tabWebcam.addEventListener('click', setWebcamMode);
+
+        // -----------------------
+        // WEBCAM LOGIC
+        // -----------------------
+        const cameraStream = document.getElementById('camera-stream');
+        const captureBtn = document.getElementById('capture-btn');
+        const cameraCanvas = document.getElementById('camera-canvas');
+        let streamRef = null;
+
+        async function startWebcam() {
+            try {
+                if (streamRef) stopWebcam();
+                const stream = await navigator.mediaDevices.getUserMedia({ video: true, audio: false });
+                cameraStream.srcObject = stream;
+                streamRef = stream;
+                isWebcamActive = true;
+            } catch (err) {
+                console.error("Camera access denied or unavailable:", err);
+                alert("Permission denied or camera not found. Please enable webcam access in your browser settings.");
+                setUploadMode();
+            }
+        }
+
+        function stopWebcam() {
+            if (streamRef) {
+                streamRef.getTracks().forEach(track => track.stop());
+                cameraStream.srcObject = null;
+                streamRef = null;
+                isWebcamActive = false;
+            }
+        }
+
+        captureBtn.addEventListener('click', () => {
+            if (!cameraStream.srcObject) return;
+            
+            cameraCanvas.width = cameraStream.videoWidth;
+            cameraCanvas.height = cameraStream.videoHeight;
+            const ctx = cameraCanvas.getContext('2d');
+            ctx.drawImage(cameraStream, 0, 0, cameraCanvas.width, cameraCanvas.height);
+            
+            cameraCanvas.toBlob((blob) => {
+                const formData = new FormData();
+                formData.append('image', blob, 'webcam.jpg');
+                
+                showLoading();
+                
+                fetch('/capture_webcam', {
+                    method: 'POST',
+                    body: formData
+                })
+                .then(response => response.json())
+                .then(data => {
+                    hideLoading();
+                    if(data.status === 'success') {
+                        // Display results section
+                        const resultsSection = document.getElementById('results-section');
+                        resultsSection.style.display = 'block';
+                        
+                        // Update caption text
+                        document.getElementById('caption-text-display').innerText = data.caption;
+                        
+                        // Update audio
+                        const audioEl = document.getElementById('caption-audio');
+                        audioEl.src = data.audio_url;
+                        
+                        // Stop webcam and show preview
+                        stopWebcam();
+                        uploadArea.classList.remove('hidden');
+                        webcamArea.classList.add('hidden');
+                        previewImageBg.src = data.image_url;
+                        previewImageBg.classList.remove('hidden');
+                        dropText.innerHTML = `<span style="color:#00f2fe">Captured:</span> ${data.filename}`;
+                        
+                        tabUpload.classList.add('bg-primary-container', 'text-on-primary-container');
+                        tabUpload.classList.remove('text-on-surface-variant');
+                        tabWebcam.classList.remove('bg-primary-container', 'text-on-primary-container');
+                        tabWebcam.classList.add('text-on-surface-variant');
+                        generateBtnContainer.classList.remove('hidden');
+                    } else {
+                        alert('Error processing image: ' + data.message);
+                    }
+                })
+                .catch(err => {
+                    console.error('Error sending capture:', err);
+                    alert('Failed to send image to backend.');
+                    hideLoading();
+                });
+            }, 'image/jpeg');
+        });
+
+        // -----------------------
+        // AUDIO PLAYBACK LOGIC
+        // -----------------------
+        const playAudioBtn = document.getElementById('play-audio-btn');
+        const captionAudio = document.getElementById('caption-audio');
+
+        playAudioBtn.addEventListener('click', () => {
+            if (captionAudio.src && captionAudio.src !== window.location.href) {
+                if (captionAudio.paused) {
+                    captionAudio.play();
+                    playAudioBtn.innerHTML = '<span class="material-symbols-outlined" style="font-variation-settings: \'FILL\' 1;">pause</span> Pause Audio';
+                } else {
+                    captionAudio.pause();
+                    playAudioBtn.innerHTML = '<span class="material-symbols-outlined" style="font-variation-settings: \'FILL\' 1;">play_arrow</span> Speak Caption';
+                }
+            } else {
+                alert("No audio track available.");
+            }
+        });
+
+        captionAudio.addEventListener('ended', () => {
+            playAudioBtn.innerHTML = '<span class="material-symbols-outlined" style="font-variation-settings: \'FILL\' 1;">play_arrow</span> Speak Caption';
+        });
+        
+    </script>
+</body>
+</html>
