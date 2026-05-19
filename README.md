@@ -1,6 +1,6 @@
-# VisionAI – Hybrid Vision-Language AI Captioning System
+# VisionFusion – Hybrid Vision-Language AI Captioning System
 
-VisionAI is a hybrid AI-powered image captioning system built using Salesforce BLIP, PyTorch, Flask, and CUDA GPU acceleration. The project combines a pre-trained BLIP model with a custom fine-tuned Flickr8k model to generate more detailed, context-aware, and human-like image captions.
+VisionFusion is a hybrid AI-powered image captioning system built using Salesforce BLIP, PyTorch, Flask, and CUDA GPU acceleration. The project combines a pre-trained BLIP model with a custom fine-tuned Flickr8k model to generate more detailed, context-aware, and human-like image captions.
 
 The system supports:
 
@@ -52,6 +52,112 @@ The system supports:
 * Gradient accumulation support
 * Mid-epoch checkpoint saving
 * Resume training after interruption or power cuts
+
+---
+
+# Working of the Project
+
+The VisionFusion system follows a hybrid vision-language AI pipeline for generating image captions.
+
+## Step 1 – Image Input
+
+The user can:
+
+* Upload an image from their device
+  OR
+* Capture an image using the live webcam interface.
+
+The selected image is previewed instantly on the frontend.
+
+---
+
+## Step 2 – Image Preprocessing
+
+The image is processed using the BLIP processor from HuggingFace Transformers.
+
+Processing includes:
+
+* image resizing
+* normalization
+* tensor conversion
+
+before sending the image to the AI model.
+
+---
+
+## Step 3 – Base BLIP Caption Generation
+
+The pre-trained Salesforce BLIP model generates a base caption describing the image.
+
+This provides:
+
+* general scene understanding
+* object recognition
+* natural language description
+
+---
+
+## Step 4 – Fine-Tuned BLIP Caption Generation
+
+The fine-tuned BLIP model, trained on the Flickr8k dataset, generates a more context-aware caption.
+
+Fine-tuning improves:
+
+* scene detail understanding
+* descriptive quality
+* contextual captioning
+
+---
+
+## Step 5 – Hybrid Caption Refinement
+
+The system compares:
+
+* Base BLIP caption
+* Fine-Tuned BLIP caption
+
+and intelligently selects/refines the better caption to create a cleaner and more human-like final output.
+
+---
+
+## Step 6 – Text-to-Speech Narration
+
+The final generated caption can be converted into audio narration using the text-to-speech module.
+
+Users can:
+
+* play generated narration
+* listen to captions
+* download generated audio
+
+---
+
+## Step 7 – Frontend Display
+
+The generated captions and audio controls are displayed in a modern futuristic frontend interface supporting:
+
+* light mode
+* dark mode
+* responsive layouts
+* animated AI interactions
+
+---
+
+## Training Pipeline
+
+The fine-tuned model was trained using:
+
+* PyTorch
+* CUDA GPU acceleration
+* mixed precision training (AMP)
+* gradient accumulation
+* checkpoint recovery system
+
+The training pipeline also supports:
+
+* mid-epoch checkpoint saving
+* resume training after interruption
+* VRAM optimization for RTX 3050 GPUs
 
 ---
 
@@ -145,8 +251,6 @@ Dataset contains:
 
 ## Step 2 – Create Dataset Structure
 
-Create the following folder structure:
-
 ```bash
 dataset/
 └── flickr8k/
@@ -211,8 +315,6 @@ source venv/bin/activate
 
 # Install Dependencies
 
-Install all required packages:
-
 ```bash
 pip install -r requirements.txt
 ```
@@ -220,8 +322,6 @@ pip install -r requirements.txt
 ---
 
 # CUDA GPU Setup
-
-This project is optimized for NVIDIA CUDA GPUs.
 
 To verify CUDA:
 
@@ -239,8 +339,6 @@ CUDA Available: True
 
 # Running the Application
 
-Start Flask application:
-
 ```bash
 python app.py
 ```
@@ -254,8 +352,6 @@ http://127.0.0.1:5000
 ---
 
 # Training the Model
-
-Run BLIP fine-tuning:
 
 ```bash
 python train.py
@@ -298,8 +394,6 @@ Training will continue from the saved batch.
 ---
 
 # Important Configuration Parameters
-
-Inside `config.py`:
 
 ```python
 BATCH_SIZE = 2
