@@ -481,25 +481,38 @@ Planned upgrades:
 
 # Screenshots
 
-Add screenshots here:
-
-* Dark theme UI
-* Light theme UI
-* Webcam mode
-* Caption generation results
-* Text-to-speech section
+## Dark Theme
+![Dark Theme](screenshots/dark-theme.png)
 
 ---
 
-# Demo Video
+## Light Theme
+![Light Theme](screenshots/light-theme.png)
 
-Optional:
-Add demo video or GIF showcasing:
+---
 
-* Webcam captioning
-* Upload workflow
-* Hybrid caption generation
-* Text-to-speech narration
+## Upload Captioning
+![Upload Captioning](screenshots/upload-captions.png)
+
+---
+
+## Webcam Captioning
+![Webcam Captioning](screenshots/webcam-captions.png)
+
+---
+
+## Caption Result
+![Caption Result](screenshots/caption-result.png)
+
+---
+
+# Demo Videos
+
+## Upload Caption Demo
+demo/upload-demo.mp4
+
+## Webcam Caption Demo
+demo/webcam-demo.mp4
 
 ---
 
