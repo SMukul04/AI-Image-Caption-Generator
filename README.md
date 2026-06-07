@@ -510,10 +510,12 @@ Planned upgrades:
 # Demo Videos
 
 ## Upload Caption Demo
-demo/upload-demo.mp4
+
+[Watch Upload Demo](demo/upload-demo.mp4)
 
 ## Webcam Caption Demo
-demo/webcam-demo.mp4
+
+[Watch Webcam Demo](demo/webcam-demo.mp4)
 
 ---
 
