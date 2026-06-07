@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 # VisionFusion – Hybrid Vision-Language AI Captioning System
 
 VisionFusion is a hybrid AI-powered image captioning system built using Salesforce BLIP, PyTorch, Flask, and CUDA GPU acceleration. The project combines a pre-trained BLIP model with a custom fine-tuned Flickr8k model to generate more detailed, context-aware, and human-like image captions.
