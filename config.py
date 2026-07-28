@@ -63,4 +63,4 @@ MODEL_SAVE_DIR = os.path.join("model", "checkpoints")
 RESUME_CHECKPOINT = "model/checkpoints/epoch_1_batch_2900"
 
 # The path to your fine-tuned model for hybrid caption generation in the Flask app
-FINETUNED_MODEL_PATH = "model/checkpoints/epoch_1"
+FINETUNED_MODEL_PATH = "model/final_model"
